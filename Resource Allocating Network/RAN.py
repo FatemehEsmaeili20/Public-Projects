@@ -183,7 +183,7 @@ class ResourceAllocatingNetwork:
         #Plot the errors
         # Normalize GradStep_PerEpoch
         # Define the desired range for normalization
-        if epoch == 101:
+        if epoch == (num_epochs + 1):
             epoch = epoch - 1
         max_mse_error = max(epoch_mse_errors)
         min_mse_error = min(epoch_mse_errors)
