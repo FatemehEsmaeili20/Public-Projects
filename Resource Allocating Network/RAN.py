@@ -177,12 +177,14 @@ class ResourceAllocatingNetwork:
             if epoch_mse_error < error_threshold:
                 break
 
-            epoch += 1
+            if epoch < (num_epochs + 1):
+                epoch += 1
 
         #Plot the errors
         # Normalize GradStep_PerEpoch
         # Define the desired range for normalization
-
+        if epoch == 101:
+            epoch = epoch - 1
         max_mse_error = max(epoch_mse_errors)
         min_mse_error = min(epoch_mse_errors)
         # Find the min and max values of GradStep_PerEpoch
@@ -193,15 +195,15 @@ class ResourceAllocatingNetwork:
         rangeOfMse = max_mse_error - min_mse_error
         normalized_gradstep = [min_mse_error + ((value - min_gradstep_value) / (RangeOfGradStep)) * (rangeOfMse) for value in GradStep_PerEpoch]
 
-        plt.plot(range(num_epochs), epoch_mse_errors, label='MSE Errors')
-        plt.plot(range(num_epochs), normalized_gradstep, label='Normalized GradStep')
+        plt.plot(range(epoch), epoch_mse_errors, label='MSE Errors')
+        plt.plot(range(epoch), normalized_gradstep, label='Normalized GradStep')
         plt.xlabel('Epoch')
         plt.ylabel('value')
         plt.title('MSE and Normalized Numbers of Gradient step in everyepoch vs Epoch')
         plt.legend()
         plt.show()
 
-        plt.plot(range(num_epochs), numbers_of_centers, label='Number of Centers in every epoch')
+        plt.plot(range(epoch), numbers_of_centers, label='Number of Centers in every epoch')
         plt.xlabel('Epoch')
         plt.ylabel('Number of Centers')
         plt.title('Number of Centers in every epoch vs Epoch')
@@ -279,7 +281,7 @@ tau = 30
 # alpha is learning rate
 #alpha = 0.02
 alpha = float(input("Enter the learning rate (alpha): "))
-num_epochs = 10
+num_epochs = 100
 #error_threshold = 0.2
 error_threshold = float(input("Enter the Error Threshold (error_threshold): "))
 ran.train(X_train, y_train_encoded, epsilon, delta_max, delta_min, k, tau, alpha, num_epochs, error_threshold)
